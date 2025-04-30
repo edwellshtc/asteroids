@@ -4,6 +4,7 @@ from player import Player
 from constants import *
 from asteroid import Asteroid
 from asteroidfield import AsteroidField
+from shot import Shot
 
 
 def main():
@@ -15,6 +16,9 @@ def main():
     asteroid_group = pygame.sprite.Group()
     Asteroid.containers = (asteroid_group, updateable, drawable)
     AsteroidField.containers = (updateable,)
+
+    shot_group = pygame.sprite.Group()
+    Shot.containers = (shot_group, updateable, drawable)
 
     clock = pygame.time.Clock() #object to help track the time
     dt = 0
@@ -33,9 +37,15 @@ Screen height: 720""")
         screen.fill((0,0,0))
         updateable.update(dt)
         for objects in asteroid_group:
-            if gameplayer.collisions(objects) == True:
+            if gameplayer.collisions(objects):
                 print("Game Over!")
                 sys.exit()
+        for asteroid in asteroid_group:
+            for bullet in shot_group:
+                if asteroid.collisions(bullet):
+                    asteroid.kill()
+                    bullet.kill()
+
         for items in drawable:
             items.draw(screen)
         pygame.display.flip()
