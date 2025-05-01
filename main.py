@@ -43,7 +43,7 @@ Screen height: 720""")
         for asteroid in asteroid_group:
             for bullet in shot_group:
                 if asteroid.collisions(bullet):
-                    asteroid.kill()
+                    asteroid.split()
                     bullet.kill()
 
         for items in drawable:
